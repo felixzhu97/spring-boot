@@ -1,0 +1,132 @@
+@startuml Spring Boot 业务架构图
+!theme plain
+skinparam componentStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Microsoft YaHei"
+
+title Spring Boot 业务架构图 (TOGAF Business Architecture)
+
+' 业务能力层
+package "业务能力层" #E8F4F8 {
+  component "框架开发能力" as FrameworkDev {
+    [核心框架开发] as CoreDev
+    [自动配置机制开发] as AutoConfigDev
+    [测试框架开发] as TestDev
+  }
+  
+  component "模块开发能力" as ModuleDev {
+    [Web模块开发] as WebDev
+    [数据访问模块开发] as DataDev
+    [消息模块开发] as MsgDev
+    [安全模块开发] as SecurityDev
+  }
+  
+  component "构建工具能力" as BuildDev {
+    [Gradle插件开发] as GradlePlugin
+    [Maven插件开发] as MavenPlugin
+    [Buildpack支持] as Buildpack
+  }
+  
+  component "文档能力" as DocCap {
+    [文档生成] as DocGen
+    [API文档] as APIDoc
+  }
+  
+  component "质量保证能力" as QACap {
+    [单元测试] as UnitTest
+    [集成测试] as IntegrationTest
+    [冒烟测试] as SmokeTest
+    [系统测试] as SystemTest
+  }
+}
+
+' 业务流程层
+package "业务流程层" #F0F8E8 {
+  component "开发流程" as DevProcess {
+    [需求分析] as ReqAnalysis
+    [架构设计] as ArchDesign
+    [编码实现] as Coding
+    [测试验证] as Testing
+    [文档编写] as Documentation
+    [发布部署] as Release
+  }
+  
+  component "质量流程" as QualityProcess {
+    [代码审查] as CodeReview
+    [持续集成] as CI
+    [持续部署] as CD
+    [性能测试] as PerfTest
+  }
+}
+
+' 价值流
+package "价值流" #FFF8E8 {
+  component "价值交付" as ValueStream {
+    [快速启动] as QuickStart
+    [开箱即用] as OutOfBox
+    [生产就绪] as ProductionReady
+    [社区支持] as Community
+  }
+}
+
+' 组织结构
+package "组织结构" #F8E8F8 {
+  component "核心团队" as CoreTeam {
+    [框架维护] as FrameworkMaintain
+    [架构决策] as ArchDecision
+  }
+  
+  component "模块团队" as ModuleTeam {
+    [功能开发] as FeatureDev
+    [问题修复] as BugFix
+  }
+  
+  component "社区贡献" as CommunityCont {
+    [外部贡献者] as ExternalContrib
+    [用户反馈] as UserFeedback
+  }
+}
+
+' 关系定义
+CoreDev --> ReqAnalysis : 支持
+AutoConfigDev --> ArchDesign : 支持
+TestDev --> Testing : 支持
+WebDev --> Coding : 实现
+DataDev --> Coding : 实现
+MsgDev --> Coding : 实现
+SecurityDev --> Coding : 实现
+
+GradlePlugin --> CI : 支持
+MavenPlugin --> CI : 支持
+Buildpack --> CD : 支持
+
+DocGen --> Documentation : 支持
+APIDoc --> Documentation : 支持
+
+UnitTest --> Testing : 执行
+IntegrationTest --> Testing : 执行
+SmokeTest --> Testing : 执行
+SystemTest --> Testing : 执行
+
+ReqAnalysis --> ArchDesign : 流程
+ArchDesign --> Coding : 流程
+Coding --> Testing : 流程
+Testing --> Documentation : 流程
+Documentation --> Release : 流程
+
+CodeReview --> CI : 触发
+CI --> CD : 触发
+CD --> Release : 触发
+
+QuickStart --> OutOfBox : 价值
+OutOfBox --> ProductionReady : 价值
+ProductionReady --> Community : 价值
+
+FrameworkMaintain --> FrameworkDev : 负责
+ArchDecision --> ModuleDev : 指导
+FeatureDev --> ModuleDev : 执行
+BugFix --> ModuleDev : 执行
+ExternalContrib --> ModuleDev : 贡献
+UserFeedback --> ModuleDev : 反馈
+
+@enduml

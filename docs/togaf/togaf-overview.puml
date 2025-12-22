@@ -1,0 +1,190 @@
+@startuml Spring Boot TOGAF总览图
+!theme plain
+skinparam componentStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Microsoft YaHei"
+
+title Spring Boot TOGAF企业架构总览图
+
+' 四个架构域
+package "业务架构域" #E8F4F8 {
+  component "业务能力" as BusinessCapability
+  component "业务流程" as BusinessProcess
+  component "价值流" as ValueStream
+  component "组织结构" as Organization
+}
+
+package "应用架构域" #F0F8E8 {
+  component "核心应用" as CoreApp
+  component "Web应用" as WebApp
+  component "数据应用" as DataApp
+  component "消息应用" as MessageApp
+  component "安全应用" as SecurityApp
+  component "监控应用" as MonitorApp
+}
+
+package "数据架构域" #FFF8E8 {
+  component "数据实体" as DataEntity
+  component "数据访问" as DataAccess
+  component "数据存储" as DataStorage
+  component "数据迁移" as DataMigration
+  component "数据治理" as DataGovernance
+}
+
+package "技术架构域" #F8E8F8 {
+  component "运行时平台" as RuntimePlatform
+  component "Web服务器" as WebServer
+  component "构建工具" as BuildTool
+  component "部署技术" as DeployTech
+  component "开发工具" as DevTool
+  component "监控技术" as MonitorTech
+  component "基础设施" as Infrastructure
+}
+
+' ADM阶段
+package "ADM架构开发方法" #FFE8E8 {
+  component "阶段A:架构愿景" as PhaseA {
+    [业务驱动] as BusinessDriver
+    [架构原则] as ArchPrinciples
+  }
+  
+  component "阶段B:业务架构" as PhaseB {
+    [业务能力分析] as CapabilityAnalysis
+    [流程建模] as ProcessModeling
+  }
+  
+  component "阶段C:信息系统架构" as PhaseC {
+    [应用架构] as AppArch
+    [数据架构] as DataArch
+  }
+  
+  component "阶段D:技术架构" as PhaseD {
+    [技术选型] as TechSelection
+    [平台设计] as PlatformDesign
+  }
+  
+  component "阶段E:机会与解决方案" as PhaseE {
+    [迁移规划] as MigrationPlan
+    [实施路线图] as ImplementationRoadmap
+  }
+  
+  component "阶段F:迁移规划" as PhaseF {
+    [项目组合] as ProjectPortfolio
+    [依赖管理] as DependencyMgmt
+  }
+  
+  component "阶段G:实施治理" as PhaseG {
+    [架构合规] as ArchCompliance
+    [变更管理] as ChangeMgmt
+  }
+  
+  component "阶段H:架构变更管理" as PhaseH {
+    [变更请求] as ChangeRequest
+    [架构演进] as ArchEvolution
+  }
+}
+
+' 架构治理
+package "架构治理" #E8F8F0 {
+  component "架构委员会" as ArchBoard {
+    [决策制定] as DecisionMaking
+    [标准制定] as StandardSetting
+  }
+  
+  component "架构审查" as ArchReview {
+    [合规检查] as ComplianceCheck
+    [质量保证] as QualityAssurance
+  }
+  
+  component "架构存储库" as ArchRepository {
+    [架构资产] as ArchAssets
+    [最佳实践] as BestPractices
+  }
+}
+
+' 模块依赖关系概览
+package "模块依赖概览" #F0F0F0 {
+  component "核心模块" as CoreModule {
+    [spring-boot] as SpringBootCore
+    [autoconfigure] as AutoConfig
+    [test] as Test
+  }
+  
+  component "功能模块" as FeatureModule {
+    [webmvc/webflux] as Web
+    [data-*] as Data
+    [security] as Security
+    [actuator] as Actuator
+  }
+  
+  component "构建模块" as BuildModule {
+    [gradle-plugin] as Gradle
+    [maven-plugin] as Maven
+    [buildpack] as Buildpack
+  }
+}
+
+' 架构域之间的关系
+BusinessCapability --> CoreApp : 驱动
+BusinessProcess --> WebApp : 支持
+ValueStream --> DataApp : 实现
+
+CoreApp --> DataEntity : 使用
+WebApp --> DataAccess : 调用
+DataApp --> DataStorage : 访问
+
+CoreApp --> RuntimePlatform : 运行在
+WebApp --> WebServer : 部署到
+DataApp --> DataStorage : 连接
+
+RuntimePlatform --> BuildTool : 构建
+WebServer --> DeployTech : 打包
+DataStorage --> Infrastructure : 运行在
+
+' ADM流程
+PhaseA --> PhaseB : 下一步
+PhaseB --> PhaseC : 下一步
+PhaseC --> PhaseD : 下一步
+PhaseD --> PhaseE : 下一步
+PhaseE --> PhaseF : 下一步
+PhaseF --> PhaseG : 下一步
+PhaseG --> PhaseH : 下一步
+PhaseH --> PhaseA : 循环
+
+BusinessDriver --> CapabilityAnalysis : 输入
+CapabilityAnalysis --> AppArch : 输入
+AppArch --> TechSelection : 输入
+TechSelection --> MigrationPlan : 输入
+MigrationPlan --> ProjectPortfolio : 输入
+ProjectPortfolio --> ArchCompliance : 输入
+ArchCompliance --> ChangeRequest : 输入
+ChangeRequest --> ArchEvolution : 输入
+
+' 架构治理关系
+ArchBoard --> DecisionMaking : 执行
+ArchBoard --> StandardSetting : 执行
+ArchReview --> ComplianceCheck : 执行
+ArchReview --> QualityAssurance : 执行
+ArchRepository --> ArchAssets : 存储
+ArchRepository --> BestPractices : 存储
+
+DecisionMaking --> PhaseA : 指导
+StandardSetting --> PhaseD : 指导
+ComplianceCheck --> PhaseG : 执行
+QualityAssurance --> PhaseG : 执行
+ArchAssets --> PhaseC : 参考
+BestPractices --> PhaseE : 参考
+
+' 模块依赖关系
+SpringBootCore --> AutoConfig : 依赖
+SpringBootCore --> Test : 依赖
+Web --> SpringBootCore : 依赖
+Data --> SpringBootCore : 依赖
+Security --> SpringBootCore : 依赖
+Actuator --> SpringBootCore : 依赖
+Gradle --> SpringBootCore : 构建
+Maven --> SpringBootCore : 构建
+Buildpack --> SpringBootCore : 打包
+
+@enduml
+

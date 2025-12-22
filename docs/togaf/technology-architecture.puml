@@ -1,0 +1,165 @@
+@startuml Spring Boot 技术架构图
+!theme plain
+skinparam componentStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Microsoft YaHei"
+
+title Spring Boot 技术架构图 (TOGAF Technology Architecture)
+
+' 运行时平台层
+package "运行时平台层" #E8F4F8 {
+  node "JVM" as JVM {
+    [Java虚拟机] as JavaVM
+    [类加载器] as ClassLoader
+    [内存管理] as MemoryMgmt
+  }
+  
+  component "Spring Framework" as SpringFramework {
+    [IoC容器] as IoCContainer
+    [AOP] as AOP
+    [事务管理] as TxMgmt
+  }
+}
+
+' Web服务器层
+package "Web服务器层" #F0F8E8 {
+  component "Tomcat" as Tomcat {
+    [Servlet容器] as ServletContainer
+    [HTTP连接器] as HTTPConnector
+    [AJP连接器] as AJPConnector
+  }
+  
+  component "Jetty" as Jetty {
+    [嵌入式服务器] as EmbeddedJetty
+    [HTTP/2支持] as HTTP2
+  }
+  
+  component "Netty" as Netty {
+    [响应式服务器] as ReactiveServer
+    [事件循环] as EventLoop
+  }
+}
+
+' 构建工具层
+package "构建工具层" #FFF8E8 {
+  component "Gradle插件" as GradlePlugin {
+    [spring-boot-gradle-plugin] as GradlePluginCore
+    [打包任务] as PackagingTask
+    [依赖管理] as DependencyMgmt
+  }
+  
+  component "Maven插件" as MavenPlugin {
+    [spring-boot-maven-plugin] as MavenPluginCore
+    [打包目标] as PackagingGoal
+    [依赖管理] as MavenDependencyMgmt
+  }
+  
+  component "Buildpack" as Buildpack {
+    [Cloud Native Buildpacks] as CNB
+    [镜像构建] as ImageBuild
+    [容器化] as Containerization
+  }
+}
+
+' 部署技术层
+package "部署技术层" #F8E8F8 {
+  component "JAR打包" as JARPackaging {
+    [可执行JAR] as ExecutableJAR
+    [嵌套JAR] as NestedJAR
+    [JAR加载器] as JARLoader
+  }
+  
+  component "WAR打包" as WARPackaging {
+    [传统WAR] as TraditionalWAR
+    [嵌入式WAR] as EmbeddedWAR
+  }
+  
+  component "Docker镜像" as DockerImage {
+    [容器镜像] as ContainerImage
+    [多阶段构建] as MultiStageBuild
+  }
+}
+
+' 开发工具层
+package "开发工具层" #FFE8E8 {
+  component "CLI" as CLI {
+    [命令行工具] as CommandLineTool
+    [Groovy脚本] as GroovyScript
+    [快速原型] as QuickPrototype
+  }
+  
+  component "DevTools" as DevTools {
+    [自动重启] as AutoRestart
+    [LiveReload] as LiveReload
+    [属性默认值] as PropertyDefaults
+  }
+}
+
+' 监控技术层
+package "监控技术层" #E8F8F0 {
+  component "Actuator" as Actuator {
+    [健康检查] as HealthCheck
+    [指标收集] as MetricsCollection
+    [信息端点] as InfoEndpoint
+  }
+  
+  component "Micrometer" as Micrometer {
+    [指标注册表] as MeterRegistry
+    [指标导出] as MetricsExport
+    [Prometheus] as Prometheus
+  }
+  
+  component "OpenTelemetry" as OpenTelemetry {
+    [分布式追踪] as DistributedTracing
+    [Span收集] as SpanCollection
+    [Jaeger] as Jaeger
+    [Zipkin] as Zipkin
+  }
+}
+
+' 基础设施层
+package "基础设施层" #F0F0F0 {
+  component "Docker Compose" as DockerCompose {
+    [服务编排] as ServiceOrchestration
+    [容器管理] as ContainerMgmt
+  }
+  
+  component "Testcontainers" as Testcontainers {
+    [测试容器] as TestContainer
+    [数据库容器] as DatabaseContainer
+    [集成测试] as IntegrationTest
+  }
+}
+
+' 技术关系
+JVM --> SpringFramework : 运行
+SpringFramework --> IoCContainer : 提供
+
+Tomcat --> JVM : 运行在
+Jetty --> JVM : 运行在
+Netty --> JVM : 运行在
+
+GradlePlugin --> JARPackaging : 生成
+MavenPlugin --> JARPackaging : 生成
+Buildpack --> DockerImage : 生成
+
+JARPackaging --> Tomcat : 包含
+JARPackaging --> Jetty : 包含
+WARPackaging --> Tomcat : 部署到
+DockerImage --> ContainerImage : 构建
+
+CLI --> JVM : 使用
+DevTools --> SpringFramework : 扩展
+
+Actuator --> SpringFramework : 集成
+Micrometer --> Actuator : 集成
+OpenTelemetry --> Micrometer : 集成
+
+DockerCompose --> DockerImage : 编排
+Testcontainers --> DockerImage : 使用
+
+SpringFramework --> Tomcat : 配置
+SpringFramework --> Jetty : 配置
+SpringFramework --> Netty : 配置
+
+@enduml

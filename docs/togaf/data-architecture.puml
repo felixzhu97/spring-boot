@@ -1,0 +1,202 @@
+@startuml Spring Boot 数据架构图
+!theme plain
+skinparam classStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Microsoft YaHei"
+
+title Spring Boot 数据架构图 (TOGAF Data Architecture)
+
+' 数据实体层
+package "数据实体层" #E8F4F8 {
+  class "JPA实体" as JPAEntity {
+    + @Entity
+    + @Id
+    + @Column
+    + 关系映射
+  }
+  
+  class "JDBC数据模型" as JDBCModel {
+    + RowMapper
+    + ResultSet
+    + PreparedStatement
+  }
+  
+  class "MongoDB文档模型" as MongoDoc {
+    + @Document
+    + @Field
+    + BSON
+  }
+  
+  class "Cassandra数据模型" as CassandraModel {
+    + @Table
+    + @PrimaryKey
+    + CQL
+  }
+  
+  class "Neo4j图模型" as Neo4jModel {
+    + @Node
+    + @Relationship
+    + Cypher
+  }
+  
+  class "Redis键值模型" as RedisKV {
+    + String
+    + Hash
+    + List
+    + Set
+  }
+}
+
+' 数据访问层
+package "数据访问层" #F0F8E8 {
+  class "Repository接口" as Repository {
+    + CrudRepository
+    + PagingAndSortingRepository
+    + JpaRepository
+    + MongoRepository
+  }
+  
+  class "JDBC Template" as JdbcTemplate {
+    + query()
+    + update()
+    + execute()
+  }
+  
+  class "Mongo Template" as MongoTemplate {
+    + find()
+    + save()
+    + remove()
+  }
+  
+  class "R2DBC Template" as R2dbcTemplate {
+    + select()
+    + insert()
+    + update()
+    + 响应式操作
+  }
+  
+  class "Redis Template" as RedisTemplate {
+    + opsForValue()
+    + opsForHash()
+    + opsForList()
+  }
+}
+
+' 数据存储层
+package "数据存储层" #FFF8E8 {
+  class "关系型数据库" as RDBMS {
+    + PostgreSQL
+    + MySQL
+    + Oracle
+    + SQL Server
+    + H2
+    + HSQLDB
+  }
+  
+  class "PostgreSQL" as PostgreSQL
+  class "MySQL" as MySQL
+  class "Oracle" as Oracle
+  class "SQL Server" as SQLServer
+  class "H2" as H2
+  class "HSQLDB" as HSQLDB
+  
+  class "NoSQL数据库" as NoSQL {
+    + MongoDB
+    + Cassandra
+    + Couchbase
+    + Neo4j
+    + Elasticsearch
+  }
+  
+  class "MongoDB" as MongoDB
+  class "Cassandra" as Cassandra
+  class "Couchbase" as Couchbase
+  class "Neo4j" as Neo4j
+  class "Elasticsearch" as Elasticsearch
+  
+  class "缓存" as Cache {
+    + Redis
+    + Hazelcast
+  }
+  
+  class "Redis" as Redis
+  class "Hazelcast" as Hazelcast
+  
+  ' 组合关系
+  RDBMS *-- PostgreSQL
+  RDBMS *-- MySQL
+  RDBMS *-- Oracle
+  RDBMS *-- SQLServer
+  RDBMS *-- H2
+  RDBMS *-- HSQLDB
+  
+  NoSQL *-- MongoDB
+  NoSQL *-- Cassandra
+  NoSQL *-- Couchbase
+  NoSQL *-- Neo4j
+  NoSQL *-- Elasticsearch
+  
+  Cache *-- Redis
+  Cache *-- Hazelcast
+}
+
+' 数据迁移层
+package "数据迁移层" #F8E8F8 {
+  class "Flyway" as Flyway {
+    + 版本控制
+    + 迁移脚本
+    + 回滚支持
+  }
+  
+  class "Liquibase" as Liquibase {
+    + 变更日志
+    + 变更集
+    + 回滚支持
+  }
+}
+
+' 数据治理
+package "数据治理" #FFE8E8 {
+  class "数据源配置" as DataSourceConfig {
+    + 连接池配置
+    + 连接属性
+    + 健康检查
+  }
+  
+  class "事务管理" as TransactionMgmt {
+    + @Transactional
+    + 事务传播
+    + 隔离级别
+  }
+  
+  class "数据验证" as DataValidation {
+    + @Valid
+    + @NotNull
+    + @Size
+  }
+}
+
+' 数据流关系
+JPAEntity --> Repository : 映射到
+JDBCModel --> JdbcTemplate : 使用
+MongoDoc --> MongoTemplate : 使用
+CassandraModel --> Repository : 映射到
+Neo4jModel --> Repository : 映射到
+RedisKV --> RedisTemplate : 使用
+
+Repository --> PostgreSQL : 访问
+Repository --> MySQL : 访问
+Repository --> Oracle : 访问
+JdbcTemplate --> RDBMS : 连接
+MongoTemplate --> MongoDB : 连接
+R2dbcTemplate --> PostgreSQL : 响应式连接
+RedisTemplate --> Redis : 连接
+
+Flyway --> RDBMS : 迁移
+Liquibase --> RDBMS : 迁移
+
+DataSourceConfig --> RDBMS : 配置连接
+TransactionMgmt --> Repository : 管理事务
+DataValidation --> JPAEntity : 验证数据
+
+@enduml
