@@ -1,89 +1,88 @@
 @startuml Spring Boot 业务架构图
 !theme plain
 skinparam componentStyle rectangle
-skinparam backgroundColor #FFFFFF
 skinparam defaultFontName "Microsoft YaHei"
 
 title Spring Boot 业务架构图 (TOGAF Business Architecture)
 
 ' 业务能力层
-package "业务能力层" #E8F4F8 {
+package "业务能力层" {
   component "框架开发能力" as FrameworkDev {
-    [核心框架开发] as CoreDev
-    [自动配置机制开发] as AutoConfigDev
-    [测试框架开发] as TestDev
+    component "核心框架开发" as CoreDev
+    component "自动配置机制开发" as AutoConfigDev
+    component "测试框架开发" as TestDev
   }
   
   component "模块开发能力" as ModuleDev {
-    [Web模块开发] as WebDev
-    [数据访问模块开发] as DataDev
-    [消息模块开发] as MsgDev
-    [安全模块开发] as SecurityDev
+    component "Web模块开发" as WebDev
+    component "数据访问模块开发" as DataDev
+    component "消息模块开发" as MsgDev
+    component "安全模块开发" as SecurityDev
   }
   
   component "构建工具能力" as BuildDev {
-    [Gradle插件开发] as GradlePlugin
-    [Maven插件开发] as MavenPlugin
-    [Buildpack支持] as Buildpack
+    component "Gradle插件开发" as GradlePlugin
+    component "Maven插件开发" as MavenPlugin
+    component "Buildpack支持" as Buildpack
   }
   
   component "文档能力" as DocCap {
-    [文档生成] as DocGen
-    [API文档] as APIDoc
+    component "文档生成" as DocGen
+    component "API文档" as APIDoc
   }
   
   component "质量保证能力" as QACap {
-    [单元测试] as UnitTest
-    [集成测试] as IntegrationTest
-    [冒烟测试] as SmokeTest
-    [系统测试] as SystemTest
+    component "单元测试" as UnitTest
+    component "集成测试" as IntegrationTest
+    component "冒烟测试" as SmokeTest
+    component "系统测试" as SystemTest
   }
 }
 
 ' 业务流程层
-package "业务流程层" #F0F8E8 {
+package "业务流程层" {
   component "开发流程" as DevProcess {
-    [需求分析] as ReqAnalysis
-    [架构设计] as ArchDesign
-    [编码实现] as Coding
-    [测试验证] as Testing
-    [文档编写] as Documentation
-    [发布部署] as Release
+    component "需求分析" as ReqAnalysis
+    component "架构设计" as ArchDesign
+    component "编码实现" as Coding
+    component "测试验证" as Testing
+    component "文档编写" as Documentation
+    component "发布部署" as Release
   }
   
   component "质量流程" as QualityProcess {
-    [代码审查] as CodeReview
-    [持续集成] as CI
-    [持续部署] as CD
-    [性能测试] as PerfTest
+    component "代码审查" as CodeReview
+    component "持续集成" as CI
+    component "持续部署" as CD
+    component "性能测试" as PerfTest
   }
 }
 
 ' 价值流
-package "价值流" #FFF8E8 {
+package "价值流" {
   component "价值交付" as ValueStream {
-    [快速启动] as QuickStart
-    [开箱即用] as OutOfBox
-    [生产就绪] as ProductionReady
-    [社区支持] as Community
+    component "快速启动" as QuickStart
+    component "开箱即用" as OutOfBox
+    component "生产就绪" as ProductionReady
+    component "社区支持" as Community
   }
 }
 
 ' 组织结构
-package "组织结构" #F8E8F8 {
+package "组织结构" {
   component "核心团队" as CoreTeam {
-    [框架维护] as FrameworkMaintain
-    [架构决策] as ArchDecision
+    component "框架维护" as FrameworkMaintain
+    component "架构决策" as ArchDecision
   }
   
   component "模块团队" as ModuleTeam {
-    [功能开发] as FeatureDev
-    [问题修复] as BugFix
+    component "功能开发" as FeatureDev
+    component "问题修复" as BugFix
   }
   
   component "社区贡献" as CommunityCont {
-    [外部贡献者] as ExternalContrib
-    [用户反馈] as UserFeedback
+    component "外部贡献者" as ExternalContrib
+    component "用户反馈" as UserFeedback
   }
 }
 

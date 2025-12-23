@@ -1,20 +1,19 @@
 @startuml Spring Boot TOGAF总览图
 !theme plain
 skinparam componentStyle rectangle
-skinparam backgroundColor #FFFFFF
 skinparam defaultFontName "Microsoft YaHei"
 
 title Spring Boot TOGAF企业架构总览图
 
 ' 四个架构域
-package "业务架构域" #E8F4F8 {
+package "业务架构域" {
   component "业务能力" as BusinessCapability
   component "业务流程" as BusinessProcess
   component "价值流" as ValueStream
   component "组织结构" as Organization
 }
 
-package "应用架构域" #F0F8E8 {
+package "应用架构域" {
   component "核心应用" as CoreApp
   component "Web应用" as WebApp
   component "数据应用" as DataApp
@@ -23,7 +22,7 @@ package "应用架构域" #F0F8E8 {
   component "监控应用" as MonitorApp
 }
 
-package "数据架构域" #FFF8E8 {
+package "数据架构域" {
   component "数据实体" as DataEntity
   component "数据访问" as DataAccess
   component "数据存储" as DataStorage
@@ -31,7 +30,7 @@ package "数据架构域" #FFF8E8 {
   component "数据治理" as DataGovernance
 }
 
-package "技术架构域" #F8E8F8 {
+package "技术架构域" {
   component "运行时平台" as RuntimePlatform
   component "Web服务器" as WebServer
   component "构建工具" as BuildTool
@@ -42,85 +41,85 @@ package "技术架构域" #F8E8F8 {
 }
 
 ' ADM阶段
-package "ADM架构开发方法" #FFE8E8 {
+package "ADM架构开发方法" {
   component "阶段A:架构愿景" as PhaseA {
-    [业务驱动] as BusinessDriver
-    [架构原则] as ArchPrinciples
+    component "业务驱动" as BusinessDriver
+    component "架构原则" as ArchPrinciples
   }
   
   component "阶段B:业务架构" as PhaseB {
-    [业务能力分析] as CapabilityAnalysis
-    [流程建模] as ProcessModeling
+    component "业务能力分析" as CapabilityAnalysis
+    component "流程建模" as ProcessModeling
   }
   
   component "阶段C:信息系统架构" as PhaseC {
-    [应用架构] as AppArch
-    [数据架构] as DataArch
+    component "应用架构" as AppArch
+    component "数据架构" as DataArch
   }
   
   component "阶段D:技术架构" as PhaseD {
-    [技术选型] as TechSelection
-    [平台设计] as PlatformDesign
+    component "技术选型" as TechSelection
+    component "平台设计" as PlatformDesign
   }
   
   component "阶段E:机会与解决方案" as PhaseE {
-    [迁移规划] as MigrationPlan
-    [实施路线图] as ImplementationRoadmap
+    component "迁移规划" as MigrationPlan
+    component "实施路线图" as ImplementationRoadmap
   }
   
   component "阶段F:迁移规划" as PhaseF {
-    [项目组合] as ProjectPortfolio
-    [依赖管理] as DependencyMgmt
+    component "项目组合" as ProjectPortfolio
+    component "依赖管理" as DependencyMgmt
   }
   
   component "阶段G:实施治理" as PhaseG {
-    [架构合规] as ArchCompliance
-    [变更管理] as ChangeMgmt
+    component "架构合规" as ArchCompliance
+    component "变更管理" as ChangeMgmt
   }
   
   component "阶段H:架构变更管理" as PhaseH {
-    [变更请求] as ChangeRequest
-    [架构演进] as ArchEvolution
+    component "变更请求" as ChangeRequest
+    component "架构演进" as ArchEvolution
   }
 }
 
 ' 架构治理
-package "架构治理" #E8F8F0 {
+package "架构治理" {
   component "架构委员会" as ArchBoard {
-    [决策制定] as DecisionMaking
-    [标准制定] as StandardSetting
+    component "决策制定" as DecisionMaking
+    component "标准制定" as StandardSetting
   }
   
   component "架构审查" as ArchReview {
-    [合规检查] as ComplianceCheck
-    [质量保证] as QualityAssurance
+    component "合规检查" as ComplianceCheck
+    component "质量保证" as QualityAssurance
   }
   
   component "架构存储库" as ArchRepository {
-    [架构资产] as ArchAssets
-    [最佳实践] as BestPractices
+    component "架构资产" as ArchAssets
+    component "最佳实践" as BestPractices
   }
 }
 
 ' 模块依赖关系概览
-package "模块依赖概览" #F0F0F0 {
+package "模块依赖概览" {
   component "核心模块" as CoreModule {
-    [spring-boot] as SpringBootCore
-    [autoconfigure] as AutoConfig
-    [test] as Test
+    component "spring-boot" as SpringBootCore
+    component "autoconfigure" as AutoConfig
+    component "test" as Test
   }
   
   component "功能模块" as FeatureModule {
-    [webmvc/webflux] as Web
-    [data-*] as Data
-    [security] as Security
-    [actuator] as Actuator
+    component "webmvc/webflux" as Web
+    component "data-*" as Data
+    component "security" as Security
+    component "actuator" as Actuator
   }
   
   component "构建模块" as BuildModule {
-    [gradle-plugin] as Gradle
-    [maven-plugin] as Maven
-    [buildpack] as Buildpack
+    component "gradle-plugin" as Gradle
+    component "maven-plugin" as Maven
+    component "buildpack" as Buildpack
   }
 }
 

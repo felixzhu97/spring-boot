@@ -1,0 +1,188 @@
+@startuml Spring Boot TOGAF Overview
+!theme plain
+skinparam componentStyle rectangle
+
+title Spring Boot TOGAF Enterprise Architecture Overview
+
+' Four Architecture Domains
+package "Business Architecture Domain" {
+  component "Business Capability" as BusinessCapability
+  component "Business Process" as BusinessProcess
+  component "Value Stream" as ValueStream
+  component "Organization" as Organization
+}
+
+package "Application Architecture Domain" {
+  component "Core Application" as CoreApp
+  component "Web Application" as WebApp
+  component "Data Application" as DataApp
+  component "Messaging Application" as MessageApp
+  component "Security Application" as SecurityApp
+  component "Monitoring Application" as MonitorApp
+}
+
+package "Data Architecture Domain" {
+  component "Data Entity" as DataEntity
+  component "Data Access" as DataAccess
+  component "Data Storage" as DataStorage
+  component "Data Migration" as DataMigration
+  component "Data Governance" as DataGovernance
+}
+
+package "Technology Architecture Domain" {
+  component "Runtime Platform" as RuntimePlatform
+  component "Web Server" as WebServer
+  component "Build Tool" as BuildTool
+  component "Deployment Technology" as DeployTech
+  component "Development Tool" as DevTool
+  component "Monitoring Technology" as MonitorTech
+  component "Infrastructure" as Infrastructure
+}
+
+' ADM Phases
+package "ADM Architecture Development Method" {
+  component "Phase A: Architecture Vision" as PhaseA {
+    component "Business Driver" as BusinessDriver
+    component "Architecture Principles" as ArchPrinciples
+  }
+  
+  component "Phase B: Business Architecture" as PhaseB {
+    component "Capability Analysis" as CapabilityAnalysis
+    component "Process Modeling" as ProcessModeling
+  }
+  
+  component "Phase C: Information Systems Architecture" as PhaseC {
+    component "Application Architecture" as AppArch
+    component "Data Architecture" as DataArch
+  }
+  
+  component "Phase D: Technology Architecture" as PhaseD {
+    component "Technology Selection" as TechSelection
+    component "Platform Design" as PlatformDesign
+  }
+  
+  component "Phase E: Opportunities and Solutions" as PhaseE {
+    component "Migration Planning" as MigrationPlan
+    component "Implementation Roadmap" as ImplementationRoadmap
+  }
+  
+  component "Phase F: Migration Planning" as PhaseF {
+    component "Project Portfolio" as ProjectPortfolio
+    component "Dependency Management" as DependencyMgmt
+  }
+  
+  component "Phase G: Implementation Governance" as PhaseG {
+    component "Architecture Compliance" as ArchCompliance
+    component "Change Management" as ChangeMgmt
+  }
+  
+  component "Phase H: Architecture Change Management" as PhaseH {
+    component "Change Request" as ChangeRequest
+    component "Architecture Evolution" as ArchEvolution
+  }
+}
+
+' Architecture Governance
+package "Architecture Governance" {
+  component "Architecture Board" as ArchBoard {
+    component "Decision Making" as DecisionMaking
+    component "Standard Setting" as StandardSetting
+  }
+  
+  component "Architecture Review" as ArchReview {
+    component "Compliance Check" as ComplianceCheck
+    component "Quality Assurance" as QualityAssurance
+  }
+  
+  component "Architecture Repository" as ArchRepository {
+    component "Architecture Assets" as ArchAssets
+    component "Best Practices" as BestPractices
+  }
+}
+
+' Module Dependency Overview
+package "Module Dependency Overview" {
+  component "Core Module" as CoreModule {
+    component "spring-boot" as SpringBootCore
+    component "autoconfigure" as AutoConfig
+    component "test" as Test
+  }
+  
+  component "Feature Module" as FeatureModule {
+    component "webmvc/webflux" as Web
+    component "data-*" as Data
+    component "security" as Security
+    component "actuator" as Actuator
+  }
+  
+  component "Build Module" as BuildModule {
+    component "gradle-plugin" as Gradle
+    component "maven-plugin" as Maven
+    component "buildpack" as Buildpack
+  }
+}
+
+' Relationships between Architecture Domains
+BusinessCapability --> CoreApp : drives
+BusinessProcess --> WebApp : supports
+ValueStream --> DataApp : implements
+
+CoreApp --> DataEntity : uses
+WebApp --> DataAccess : calls
+DataApp --> DataStorage : accesses
+
+CoreApp --> RuntimePlatform : runs on
+WebApp --> WebServer : deploys to
+DataApp --> DataStorage : connects
+
+RuntimePlatform --> BuildTool : builds
+WebServer --> DeployTech : packages
+DataStorage --> Infrastructure : runs on
+
+' ADM Process Flow
+PhaseA --> PhaseB : next
+PhaseB --> PhaseC : next
+PhaseC --> PhaseD : next
+PhaseD --> PhaseE : next
+PhaseE --> PhaseF : next
+PhaseF --> PhaseG : next
+PhaseG --> PhaseH : next
+PhaseH --> PhaseA : cycle
+
+BusinessDriver --> CapabilityAnalysis : inputs
+CapabilityAnalysis --> AppArch : inputs
+AppArch --> TechSelection : inputs
+TechSelection --> MigrationPlan : inputs
+MigrationPlan --> ProjectPortfolio : inputs
+ProjectPortfolio --> ArchCompliance : inputs
+ArchCompliance --> ChangeRequest : inputs
+ChangeRequest --> ArchEvolution : inputs
+
+' Architecture Governance Relationships
+ArchBoard --> DecisionMaking : executes
+ArchBoard --> StandardSetting : executes
+ArchReview --> ComplianceCheck : executes
+ArchReview --> QualityAssurance : executes
+ArchRepository --> ArchAssets : stores
+ArchRepository --> BestPractices : stores
+
+DecisionMaking --> PhaseA : guides
+StandardSetting --> PhaseD : guides
+ComplianceCheck --> PhaseG : executes
+QualityAssurance --> PhaseG : executes
+ArchAssets --> PhaseC : references
+BestPractices --> PhaseE : references
+
+' Module Dependencies
+SpringBootCore --> AutoConfig : depends on
+SpringBootCore --> Test : depends on
+Web --> SpringBootCore : depends on
+Data --> SpringBootCore : depends on
+Security --> SpringBootCore : depends on
+Actuator --> SpringBootCore : depends on
+Gradle --> SpringBootCore : builds
+Maven --> SpringBootCore : builds
+Buildpack --> SpringBootCore : packages
+
+@enduml
+

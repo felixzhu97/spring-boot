@@ -1,0 +1,131 @@
+@startuml Spring Boot Business Architecture
+!theme plain
+skinparam componentStyle rectangle
+
+title Spring Boot Business Architecture (TOGAF Business Architecture)
+
+' Business Capability Layer
+package "Business Capability Layer" {
+  component "Framework Development Capability" as FrameworkDev {
+    component "Core Framework Development" as CoreDev
+    component "Auto-configuration Mechanism Development" as AutoConfigDev
+    component "Test Framework Development" as TestDev
+  }
+  
+  component "Module Development Capability" as ModuleDev {
+    component "Web Module Development" as WebDev
+    component "Data Access Module Development" as DataDev
+    component "Messaging Module Development" as MsgDev
+    component "Security Module Development" as SecurityDev
+  }
+  
+  component "Build Tool Capability" as BuildDev {
+    component "Gradle Plugin Development" as GradlePlugin
+    component "Maven Plugin Development" as MavenPlugin
+    component "Buildpack Support" as Buildpack
+  }
+  
+  component "Documentation Capability" as DocCap {
+    component "Documentation Generation" as DocGen
+    component "API Documentation" as APIDoc
+  }
+  
+  component "Quality Assurance Capability" as QACap {
+    component "Unit Testing" as UnitTest
+    component "Integration Testing" as IntegrationTest
+    component "Smoke Testing" as SmokeTest
+    component "System Testing" as SystemTest
+  }
+}
+
+' Business Process Layer
+package "Business Process Layer" {
+  component "Development Process" as DevProcess {
+    component "Requirements Analysis" as ReqAnalysis
+    component "Architecture Design" as ArchDesign
+    component "Coding Implementation" as Coding
+    component "Testing Validation" as Testing
+    component "Documentation Writing" as Documentation
+    component "Release Deployment" as Release
+  }
+  
+  component "Quality Process" as QualityProcess {
+    component "Code Review" as CodeReview
+    component "Continuous Integration" as CI
+    component "Continuous Deployment" as CD
+    component "Performance Testing" as PerfTest
+  }
+}
+
+' Value Stream
+package "Value Stream" {
+  component "Value Delivery" as ValueStream {
+    component "Quick Start" as QuickStart
+    component "Out of the Box" as OutOfBox
+    component "Production Ready" as ProductionReady
+    component "Community Support" as Community
+  }
+}
+
+' Organization Structure
+package "Organization Structure" {
+  component "Core Team" as CoreTeam {
+    component "Framework Maintenance" as FrameworkMaintain
+    component "Architecture Decision" as ArchDecision
+  }
+  
+  component "Module Team" as ModuleTeam {
+    component "Feature Development" as FeatureDev
+    component "Bug Fixing" as BugFix
+  }
+  
+  component "Community Contribution" as CommunityCont {
+    component "External Contributors" as ExternalContrib
+    component "User Feedback" as UserFeedback
+  }
+}
+
+' Relationship Definitions
+CoreDev --> ReqAnalysis : supports
+AutoConfigDev --> ArchDesign : supports
+TestDev --> Testing : supports
+WebDev --> Coding : implements
+DataDev --> Coding : implements
+MsgDev --> Coding : implements
+SecurityDev --> Coding : implements
+
+GradlePlugin --> CI : supports
+MavenPlugin --> CI : supports
+Buildpack --> CD : supports
+
+DocGen --> Documentation : supports
+APIDoc --> Documentation : supports
+
+UnitTest --> Testing : executes
+IntegrationTest --> Testing : executes
+SmokeTest --> Testing : executes
+SystemTest --> Testing : executes
+
+ReqAnalysis --> ArchDesign : process
+ArchDesign --> Coding : process
+Coding --> Testing : process
+Testing --> Documentation : process
+Documentation --> Release : process
+
+CodeReview --> CI : triggers
+CI --> CD : triggers
+CD --> Release : triggers
+
+QuickStart --> OutOfBox : value
+OutOfBox --> ProductionReady : value
+ProductionReady --> Community : value
+
+FrameworkMaintain --> FrameworkDev : responsible for
+ArchDecision --> ModuleDev : guides
+FeatureDev --> ModuleDev : executes
+BugFix --> ModuleDev : executes
+ExternalContrib --> ModuleDev : contributes
+UserFeedback --> ModuleDev : feedback
+
+@enduml
+

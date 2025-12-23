@@ -1,0 +1,166 @@
+@startuml Spring Boot Data Architecture
+!theme plain
+skinparam componentStyle rectangle
+
+title Spring Boot Data Architecture (TOGAF Data Architecture)
+
+' Data Entity Layer
+package "Data Entity Layer" {
+  component "JPA Entity" as JPAEntity {
+    component "@Entity" as EntityAnnotation
+    component "@Id" as IdAnnotation
+    component "@Column" as ColumnAnnotation
+    component "Relationship Mapping" as RelationshipMapping
+  }
+  
+  component "JDBC Data Model" as JDBCModel {
+    component "RowMapper" as RowMapper
+    component "ResultSet" as ResultSet
+    component "PreparedStatement" as PreparedStatement
+  }
+  
+  component "MongoDB Document Model" as MongoDoc {
+    component "@Document" as DocumentAnnotation
+    component "@Field" as FieldAnnotation
+    component "BSON" as BSON
+  }
+  
+  component "Cassandra Data Model" as CassandraModel {
+    component "@Table" as TableAnnotation
+    component "@PrimaryKey" as PrimaryKeyAnnotation
+    component "CQL" as CQL
+  }
+  
+  component "Neo4j Graph Model" as Neo4jModel {
+    component "@Node" as NodeAnnotation
+    component "@Relationship" as RelationshipAnnotation
+    component "Cypher" as Cypher
+  }
+  
+  component "Redis Key-Value Model" as RedisKV {
+    component "String" as StringType
+    component "Hash" as HashType
+    component "List" as ListType
+    component "Set" as SetType
+  }
+}
+
+' Data Access Layer
+package "Data Access Layer" {
+  component "Repository Interface" as Repository {
+    component "CrudRepository" as CrudRepository
+    component "PagingAndSortingRepository" as PagingAndSortingRepository
+    component "JpaRepository" as JpaRepository
+    component "MongoRepository" as MongoRepository
+  }
+  
+  component "JDBC Template" as JdbcTemplate {
+    component "query()" as QueryMethod
+    component "update()" as UpdateMethod
+    component "execute()" as ExecuteMethod
+  }
+  
+  component "Mongo Template" as MongoTemplate {
+    component "find()" as FindMethod
+    component "save()" as SaveMethod
+    component "remove()" as RemoveMethod
+  }
+  
+  component "R2DBC Template" as R2dbcTemplate {
+    component "select()" as SelectMethod
+    component "insert()" as InsertMethod
+    component "update()" as UpdateMethod
+    component "Reactive Operations" as ReactiveOps
+  }
+  
+  component "Redis Template" as RedisTemplate {
+    component "opsForValue()" as OpsForValue
+    component "opsForHash()" as OpsForHash
+    component "opsForList()" as OpsForList
+  }
+}
+
+' Data Storage Layer
+package "Data Storage Layer" {
+  component "Relational Database" as RDBMS {
+    component "PostgreSQL" as PostgreSQL
+    component "MySQL" as MySQL
+    component "Oracle" as Oracle
+    component "SQL Server" as SQLServer
+    component "H2" as H2
+    component "HSQLDB" as HSQLDB
+  }
+  
+  component "NoSQL Database" as NoSQL {
+    component "MongoDB" as MongoDB
+    component "Cassandra" as Cassandra
+    component "Couchbase" as Couchbase
+    component "Neo4j" as Neo4j
+    component "Elasticsearch" as Elasticsearch
+  }
+  
+  component "Cache" as Cache {
+    component "Redis" as Redis
+    component "Hazelcast" as Hazelcast
+  }
+}
+
+' Data Migration Layer
+package "Data Migration Layer" {
+  component "Flyway" as Flyway {
+    component "Version Control" as VersionControl
+    component "Migration Script" as MigrationScript
+    component "Rollback Support" as RollbackSupport
+  }
+  
+  component "Liquibase" as Liquibase {
+    component "Changelog" as Changelog
+    component "Changeset" as Changeset
+    component "Rollback Support" as LiquibaseRollback
+  }
+}
+
+' Data Governance
+package "Data Governance" {
+  component "DataSource Configuration" as DataSourceConfig {
+    component "Connection Pool Configuration" as ConnectionPoolConfig
+    component "Connection Properties" as ConnectionProperties
+    component "Health Check" as HealthCheck
+  }
+  
+  component "Transaction Management" as TransactionMgmt {
+    component "@Transactional" as TransactionalAnnotation
+    component "Transaction Propagation" as TransactionPropagation
+    component "Isolation Level" as IsolationLevel
+  }
+  
+  component "Data Validation" as DataValidation {
+    component "@Valid" as ValidAnnotation
+    component "@NotNull" as NotNullAnnotation
+    component "@Size" as SizeAnnotation
+  }
+}
+
+' Data Flow Relationships
+JPAEntity --> Repository : maps to
+JDBCModel --> JdbcTemplate : uses
+MongoDoc --> MongoTemplate : uses
+CassandraModel --> Repository : maps to
+Neo4jModel --> Repository : maps to
+RedisKV --> RedisTemplate : uses
+
+Repository --> RDBMS : accesses
+JdbcTemplate --> RDBMS : connects
+MongoTemplate --> NoSQL : connects
+R2dbcTemplate --> RDBMS : reactive connects
+RedisTemplate --> Cache : connects
+
+Flyway --> RDBMS : migrates
+Liquibase --> RDBMS : migrates
+
+DataSourceConfig --> RDBMS : configures connection
+TransactionMgmt --> Repository : manages transactions
+DataValidation --> JPAEntity : validates data
+
+@enduml
+

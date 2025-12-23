@@ -1,161 +1,160 @@
 @startuml Spring Boot 应用架构图
 !theme plain
 skinparam componentStyle rectangle
-skinparam backgroundColor #FFFFFF
 skinparam defaultFontName "Microsoft YaHei"
 
 title Spring Boot 应用架构图 (TOGAF Application Architecture)
 
 ' 核心应用层
-package "核心应用层" #E8F4F8 {
+package "核心应用层" {
   component "spring-boot" as SpringBootCore {
-    [SpringApplication] as SpringApp
-    [ApplicationContext] as AppContext
-    [Banner] as Banner
-    [ApplicationRunner] as AppRunner
+    component "SpringApplication" as SpringApp
+    component "ApplicationContext" as AppContext
+    component "Banner" as Banner
+    component "ApplicationRunner" as AppRunner
   }
   
   component "spring-boot-autoconfigure" as AutoConfig {
-    [AutoConfiguration] as AutoConfigClass
-    [ConditionalOnClass] as Conditional
-    [ConfigurationProperties] as ConfigProps
-    [ImportCandidates] as ImportCandidates
+    component "AutoConfiguration" as AutoConfigClass
+    component "ConditionalOnClass" as Conditional
+    component "ConfigurationProperties" as ConfigProps
+    component "ImportCandidates" as ImportCandidates
   }
   
   component "spring-boot-test" as TestSupport {
-    [TestContext] as TestContext
-    [MockMvc] as MockMvc
-    [TestRestTemplate] as TestRestTemplate
+    component "TestContext" as TestContext
+    component "MockMvc" as MockMvc
+    component "TestRestTemplate" as TestRestTemplate
   }
 }
 
 ' Web应用层
-package "Web应用层" #F0F8E8 {
+package "Web应用层" {
   component "spring-boot-webmvc" as WebMvc {
-    [DispatcherServlet] as DispatcherServlet
-    [Controller] as Controller
-    [RestController] as RestController
+    component "DispatcherServlet" as DispatcherServlet
+    component "Controller" as Controller
+    component "RestController" as RestController
   }
   
   component "spring-boot-webflux" as WebFlux {
-    [WebHandler] as WebHandler
-    [RouterFunction] as RouterFunction
-    [WebClient] as WebClient
+    component "WebHandler" as WebHandler
+    component "RouterFunction" as RouterFunction
+    component "WebClient" as WebClient
   }
   
   component "spring-boot-websocket" as WebSocket {
-    [WebSocketHandler] as WebSocketHandler
-    [STOMP] as STOMP
+    component "WebSocketHandler" as WebSocketHandler
+    component "STOMP" as STOMP
   }
   
   component "spring-boot-webservices" as WebServices {
-    [SOAP] as SOAP
-    [WSDL] as WSDL
+    component "SOAP" as SOAP
+    component "WSDL" as WSDL
   }
 }
 
 ' 数据访问应用层
-package "数据访问应用层" #FFF8E8 {
+package "数据访问应用层" {
   component "spring-boot-data-jpa" as DataJPA {
-    [EntityManager] as EntityManager
-    [Repository] as Repository
-    [JpaRepository] as JpaRepository
+    component "EntityManager" as EntityManager
+    component "Repository" as Repository
+    component "JpaRepository" as JpaRepository
   }
   
   component "spring-boot-data-jdbc" as DataJDBC {
-    [JdbcTemplate] as JdbcTemplate
-    [NamedParameterJdbcTemplate] as NamedJdbcTemplate
+    component "JdbcTemplate" as JdbcTemplate
+    component "NamedParameterJdbcTemplate" as NamedJdbcTemplate
   }
   
   component "spring-boot-data-mongodb" as DataMongo {
-    [MongoTemplate] as MongoTemplate
-    [MongoRepository] as MongoRepository
+    component "MongoTemplate" as MongoTemplate
+    component "MongoRepository" as MongoRepository
   }
   
   component "spring-boot-data-cassandra" as DataCassandra {
-    [CassandraTemplate] as CassandraTemplate
-    [CassandraRepository] as CassandraRepository
+    component "CassandraTemplate" as CassandraTemplate
+    component "CassandraRepository" as CassandraRepository
   }
   
   component "spring-boot-data-redis" as DataRedis {
-    [RedisTemplate] as RedisTemplate
-    [RedisRepository] as RedisRepository
+    component "RedisTemplate" as RedisTemplate
+    component "RedisRepository" as RedisRepository
   }
   
   component "spring-boot-data-r2dbc" as DataR2DBC {
-    [R2dbcEntityTemplate] as R2dbcTemplate
-    [R2dbcRepository] as R2dbcRepository
+    component "R2dbcEntityTemplate" as R2dbcTemplate
+    component "R2dbcRepository" as R2dbcRepository
   }
 }
 
 ' 消息应用层
-package "消息应用层" #F8E8F8 {
+package "消息应用层" {
   component "spring-boot-kafka" as Kafka {
-    [KafkaTemplate] as KafkaTemplate
-    [KafkaListener] as KafkaListener
+    component "KafkaTemplate" as KafkaTemplate
+    component "KafkaListener" as KafkaListener
   }
   
   component "spring-boot-activemq" as ActiveMQ {
-    [JmsTemplate] as JmsTemplate
-    [JmsListener] as JmsListener
+    component "JmsTemplate" as JmsTemplate
+    component "JmsListener" as JmsListener
   }
   
   component "spring-boot-artemis" as Artemis {
-    [ArtemisTemplate] as ArtemisTemplate
+    component "ArtemisTemplate" as ArtemisTemplate
   }
   
   component "spring-boot-amqp" as AMQP {
-    [RabbitTemplate] as RabbitTemplate
-    [RabbitListener] as RabbitListener
+    component "RabbitTemplate" as RabbitTemplate
+    component "RabbitListener" as RabbitListener
   }
   
   component "spring-boot-pulsar" as Pulsar {
-    [PulsarTemplate] as PulsarTemplate
-    [PulsarListener] as PulsarListener
+    component "PulsarTemplate" as PulsarTemplate
+    component "PulsarListener" as PulsarListener
   }
 }
 
 ' 安全应用层
-package "安全应用层" #FFE8E8 {
+package "安全应用层" {
   component "spring-boot-security" as Security {
-    [SecurityFilterChain] as SecurityFilterChain
-    [Authentication] as Authentication
-    [Authorization] as Authorization
+    component "SecurityFilterChain" as SecurityFilterChain
+    component "Authentication" as Authentication
+    component "Authorization" as Authorization
   }
   
   component "spring-boot-security-oauth2-authorization-server" as OAuth2AuthServer {
-    [AuthorizationServer] as AuthServer
-    [TokenEndpoint] as TokenEndpoint
+    component "AuthorizationServer" as AuthServer
+    component "TokenEndpoint" as TokenEndpoint
   }
   
   component "spring-boot-security-oauth2-client" as OAuth2Client {
-    [OAuth2Client] as OAuth2ClientImpl
-    [ClientRegistration] as ClientRegistration
+    component "OAuth2Client" as OAuth2ClientImpl
+    component "ClientRegistration" as ClientRegistration
   }
   
   component "spring-boot-security-oauth2-resource-server" as OAuth2Resource {
-    [ResourceServer] as ResourceServer
-    [JwtDecoder] as JwtDecoder
+    component "ResourceServer" as ResourceServer
+    component "JwtDecoder" as JwtDecoder
   }
 }
 
 ' 监控应用层
-package "监控应用层" #E8F8F0 {
+package "监控应用层" {
   component "spring-boot-actuator" as Actuator {
-    [HealthEndpoint] as HealthEndpoint
-    [MetricsEndpoint] as MetricsEndpoint
-    [InfoEndpoint] as InfoEndpoint
+    component "HealthEndpoint" as HealthEndpoint
+    component "MetricsEndpoint" as MetricsEndpoint
+    component "InfoEndpoint" as InfoEndpoint
   }
   
   component "spring-boot-micrometer-metrics" as Micrometer {
-    [MeterRegistry] as MeterRegistry
-    [Counter] as Counter
-    [Timer] as Timer
+    component "MeterRegistry" as MeterRegistry
+    component "Counter" as Counter
+    component "Timer" as Timer
   }
   
   component "spring-boot-micrometer-tracing" as Tracing {
-    [Tracer] as Tracer
-    [Span] as Span
+    component "Tracer" as Tracer
+    component "Span" as Span
   }
 }
 

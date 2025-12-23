@@ -1,0 +1,166 @@
+@startuml Spring Boot 数据架构图
+!theme plain
+skinparam componentStyle rectangle
+skinparam defaultFontName "Microsoft YaHei"
+
+title Spring Boot 数据架构图 (TOGAF Data Architecture)
+
+' 数据实体层
+package "数据实体层" {
+  component "JPA实体" as JPAEntity {
+    component "@Entity" as EntityAnnotation
+    component "@Id" as IdAnnotation
+    component "@Column" as ColumnAnnotation
+    component "关系映射" as RelationshipMapping
+  }
+  
+  component "JDBC数据模型" as JDBCModel {
+    component "RowMapper" as RowMapper
+    component "ResultSet" as ResultSet
+    component "PreparedStatement" as PreparedStatement
+  }
+  
+  component "MongoDB文档模型" as MongoDoc {
+    component "@Document" as DocumentAnnotation
+    component "@Field" as FieldAnnotation
+    component "BSON" as BSON
+  }
+  
+  component "Cassandra数据模型" as CassandraModel {
+    component "@Table" as TableAnnotation
+    component "@PrimaryKey" as PrimaryKeyAnnotation
+    component "CQL" as CQL
+  }
+  
+  component "Neo4j图模型" as Neo4jModel {
+    component "@Node" as NodeAnnotation
+    component "@Relationship" as RelationshipAnnotation
+    component "Cypher" as Cypher
+  }
+  
+  component "Redis键值模型" as RedisKV {
+    component "String" as StringType
+    component "Hash" as HashType
+    component "List" as ListType
+    component "Set" as SetType
+  }
+}
+
+' 数据访问层
+package "数据访问层" {
+  component "Repository接口" as Repository {
+    component "CrudRepository" as CrudRepository
+    component "PagingAndSortingRepository" as PagingAndSortingRepository
+    component "JpaRepository" as JpaRepository
+    component "MongoRepository" as MongoRepository
+  }
+  
+  component "JDBC Template" as JdbcTemplate {
+    component "query()" as QueryMethod
+    component "update()" as UpdateMethod
+    component "execute()" as ExecuteMethod
+  }
+  
+  component "Mongo Template" as MongoTemplate {
+    component "find()" as FindMethod
+    component "save()" as SaveMethod
+    component "remove()" as RemoveMethod
+  }
+  
+  component "R2DBC Template" as R2dbcTemplate {
+    component "select()" as SelectMethod
+    component "insert()" as InsertMethod
+    component "update()" as UpdateMethod
+    component "响应式操作" as ReactiveOps
+  }
+  
+  component "Redis Template" as RedisTemplate {
+    component "opsForValue()" as OpsForValue
+    component "opsForHash()" as OpsForHash
+    component "opsForList()" as OpsForList
+  }
+}
+
+' 数据存储层
+package "数据存储层" {
+  component "关系型数据库" as RDBMS {
+    component "PostgreSQL" as PostgreSQL
+    component "MySQL" as MySQL
+    component "Oracle" as Oracle
+    component "SQL Server" as SQLServer
+    component "H2" as H2
+    component "HSQLDB" as HSQLDB
+  }
+  
+  component "NoSQL数据库" as NoSQL {
+    component "MongoDB" as MongoDB
+    component "Cassandra" as Cassandra
+    component "Couchbase" as Couchbase
+    component "Neo4j" as Neo4j
+    component "Elasticsearch" as Elasticsearch
+  }
+  
+  component "缓存" as Cache {
+    component "Redis" as Redis
+    component "Hazelcast" as Hazelcast
+  }
+}
+
+' 数据迁移层
+package "数据迁移层" {
+  component "Flyway" as Flyway {
+    component "版本控制" as VersionControl
+    component "迁移脚本" as MigrationScript
+    component "回滚支持" as RollbackSupport
+  }
+  
+  component "Liquibase" as Liquibase {
+    component "变更日志" as Changelog
+    component "变更集" as Changeset
+    component "回滚支持" as LiquibaseRollback
+  }
+}
+
+' 数据治理
+package "数据治理" {
+  component "数据源配置" as DataSourceConfig {
+    component "连接池配置" as ConnectionPoolConfig
+    component "连接属性" as ConnectionProperties
+    component "健康检查" as HealthCheck
+  }
+  
+  component "事务管理" as TransactionMgmt {
+    component "@Transactional" as TransactionalAnnotation
+    component "事务传播" as TransactionPropagation
+    component "隔离级别" as IsolationLevel
+  }
+  
+  component "数据验证" as DataValidation {
+    component "@Valid" as ValidAnnotation
+    component "@NotNull" as NotNullAnnotation
+    component "@Size" as SizeAnnotation
+  }
+}
+
+' 数据流关系
+JPAEntity --> Repository : 映射到
+JDBCModel --> JdbcTemplate : 使用
+MongoDoc --> MongoTemplate : 使用
+CassandraModel --> Repository : 映射到
+Neo4jModel --> Repository : 映射到
+RedisKV --> RedisTemplate : 使用
+
+Repository --> RDBMS : 访问
+JdbcTemplate --> RDBMS : 连接
+MongoTemplate --> NoSQL : 连接
+R2dbcTemplate --> RDBMS : 响应式连接
+RedisTemplate --> Cache : 连接
+
+Flyway --> RDBMS : 迁移
+Liquibase --> RDBMS : 迁移
+
+DataSourceConfig --> RDBMS : 配置连接
+TransactionMgmt --> Repository : 管理事务
+DataValidation --> JPAEntity : 验证数据
+
+@enduml

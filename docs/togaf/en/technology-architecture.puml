@@ -1,0 +1,164 @@
+@startuml Spring Boot Technology Architecture
+!theme plain
+skinparam componentStyle rectangle
+
+title Spring Boot Technology Architecture (TOGAF Technology Architecture)
+
+' Runtime Platform Layer
+package "Runtime Platform Layer" {
+  component "JVM" as JVM {
+    component "Java Virtual Machine" as JavaVM
+    component "Class Loader" as ClassLoader
+    component "Memory Management" as MemoryMgmt
+  }
+  
+  component "Spring Framework" as SpringFramework {
+    component "IoC Container" as IoCContainer
+    component "AOP" as AOP
+    component "Transaction Management" as TxMgmt
+  }
+}
+
+' Web Server Layer
+package "Web Server Layer" {
+  component "Tomcat" as Tomcat {
+    component "Servlet Container" as ServletContainer
+    component "HTTP Connector" as HTTPConnector
+    component "AJP Connector" as AJPConnector
+  }
+  
+  component "Jetty" as Jetty {
+    component "Embedded Server" as EmbeddedJetty
+    component "HTTP/2 Support" as HTTP2
+  }
+  
+  component "Netty" as Netty {
+    component "Reactive Server" as ReactiveServer
+    component "Event Loop" as EventLoop
+  }
+}
+
+' Build Tool Layer
+package "Build Tool Layer" {
+  component "Gradle Plugin" as GradlePlugin {
+    component "spring-boot-gradle-plugin" as GradlePluginCore
+    component "Packaging Task" as PackagingTask
+    component "Dependency Management" as DependencyMgmt
+  }
+  
+  component "Maven Plugin" as MavenPlugin {
+    component "spring-boot-maven-plugin" as MavenPluginCore
+    component "Packaging Goal" as PackagingGoal
+    component "Dependency Management" as MavenDependencyMgmt
+  }
+  
+  component "Buildpack" as Buildpack {
+    component "Cloud Native Buildpacks" as CNB
+    component "Image Build" as ImageBuild
+    component "Containerization" as Containerization
+  }
+}
+
+' Deployment Technology Layer
+package "Deployment Technology Layer" {
+  component "JAR Packaging" as JARPackaging {
+    component "Executable JAR" as ExecutableJAR
+    component "Nested JAR" as NestedJAR
+    component "JAR Loader" as JARLoader
+  }
+  
+  component "WAR Packaging" as WARPackaging {
+    component "Traditional WAR" as TraditionalWAR
+    component "Embedded WAR" as EmbeddedWAR
+  }
+  
+  component "Docker Image" as DockerImage {
+    component "Container Image" as ContainerImage
+    component "Multi-stage Build" as MultiStageBuild
+  }
+}
+
+' Development Tool Layer
+package "Development Tool Layer" {
+  component "CLI" as CLI {
+    component "Command Line Tool" as CommandLineTool
+    component "Groovy Script" as GroovyScript
+    component "Quick Prototype" as QuickPrototype
+  }
+  
+  component "DevTools" as DevTools {
+    component "Auto Restart" as AutoRestart
+    component "LiveReload" as LiveReload
+    component "Property Defaults" as PropertyDefaults
+  }
+}
+
+' Monitoring Technology Layer
+package "Monitoring Technology Layer" {
+  component "Actuator" as Actuator {
+    component "Health Check" as HealthCheck
+    component "Metrics Collection" as MetricsCollection
+    component "Info Endpoint" as InfoEndpoint
+  }
+  
+  component "Micrometer" as Micrometer {
+    component "Meter Registry" as MeterRegistry
+    component "Metrics Export" as MetricsExport
+    component "Prometheus" as Prometheus
+  }
+  
+  component "OpenTelemetry" as OpenTelemetry {
+    component "Distributed Tracing" as DistributedTracing
+    component "Span Collection" as SpanCollection
+    component "Jaeger" as Jaeger
+    component "Zipkin" as Zipkin
+  }
+}
+
+' Infrastructure Layer
+package "Infrastructure Layer" {
+  component "Docker Compose" as DockerCompose {
+    component "Service Orchestration" as ServiceOrchestration
+    component "Container Management" as ContainerMgmt
+  }
+  
+  component "Testcontainers" as Testcontainers {
+    component "Test Container" as TestContainer
+    component "Database Container" as DatabaseContainer
+    component "Integration Test" as IntegrationTest
+  }
+}
+
+' Technology Relationships
+JVM --> SpringFramework : runs
+SpringFramework --> IoCContainer : provides
+
+Tomcat --> JVM : runs on
+Jetty --> JVM : runs on
+Netty --> JVM : runs on
+
+GradlePlugin --> JARPackaging : generates
+MavenPlugin --> JARPackaging : generates
+Buildpack --> DockerImage : generates
+
+JARPackaging --> Tomcat : contains
+JARPackaging --> Jetty : contains
+WARPackaging --> Tomcat : deploys to
+DockerImage --> ContainerImage : builds
+
+CLI --> JVM : uses
+DevTools --> SpringFramework : extends
+
+Actuator --> SpringFramework : integrates
+Micrometer --> Actuator : integrates
+OpenTelemetry --> Micrometer : integrates
+
+DockerCompose --> DockerImage : orchestrates
+Testcontainers --> DockerImage : uses
+
+SpringFramework --> Tomcat : configures
+SpringFramework --> Jetty : configures
+SpringFramework --> Netty : configures
+
+@enduml
+
